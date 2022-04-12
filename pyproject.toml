@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "aioresponses"
+version = "0.1.0"
+description = "proper aioresponses lib"
+authors = ["indico <engineering@indicodata.ai>"]
+packages = [ {include = "aioresponses"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+setuptools = "^57.4.0"
+pytest = {version = "^6.2.4", extras = ["test"]}
+
+
+
+[tool.poetry.dev-dependencies]
+pytest = {version = "^6.2.4"}
+black = {version = "^22.3.0", allow-prereleases = true}
+isort = {version = "^5.10.1", allow-prereleases = true}
+ipdb = {version = "^0.13.9", allow-prereleases = true}
+
+[tool.pytest.ini_options]
+addopts = "-ra -q"
+testpaths = [
+    "tests"
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

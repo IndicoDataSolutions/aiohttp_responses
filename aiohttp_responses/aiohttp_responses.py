@@ -1,5 +1,6 @@
 import json as jsonlib
 import re
+import sys
 import typing as t
 from collections import defaultdict
 from copy import deepcopy
@@ -7,6 +8,11 @@ from functools import partialmethod
 from unittest import mock
 
 from aiohttp.client import ClientSession, StrOrURL
+
+if sys.version_info < (3, 8):
+    from typing_extensions import Literal
+else:
+    Literal = t.Literal
 
 
 class MockResponse:
@@ -97,7 +103,7 @@ class Entry:
         )
 
 
-HTTP_METHODS = t.Literal["get", "post", "put", "delete", "patch"]
+HTTP_METHODS = Literal["get", "post", "put", "delete", "patch"]
 
 
 class aiohttp_responses:

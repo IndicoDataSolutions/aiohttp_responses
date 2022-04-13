@@ -8,6 +8,6 @@ indico <engineering@indicodata.ai>
 """
 from .aiohttp_responses import aiohttp_responses
 
-version = "0.1.0"
+version = "0.2.0"
 
 __all__ = ["aiohttp_responses"]

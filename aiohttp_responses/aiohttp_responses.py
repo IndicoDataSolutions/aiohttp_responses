@@ -45,11 +45,15 @@ class MockResponse:
     async def text(self):
         return self._text
 
-    async def json(self):
+    async def json(self, *args, **kwargs):
         return self._json
 
     def release(self):
         pass
+
+    @property
+    def ok(self):
+        return self.status < 400
 
 
 class Entry:
@@ -121,17 +125,19 @@ class aiohttp_responses:
     # Internal Use
     _entry_registry: t.Dict[HTTP_METHODS, t.Any]
     _supported_kwargs: t.Iterable[str]
-
+    _response_cls: t.Type[MockResponse]
     _original: t.Dict[HTTP_METHODS, t.Any]
 
     def __init__(
         self,
         json_serializer: t.Callable[[t.Any], str] = jsonlib.dumps,
         json_deserializer: t.Callable[[str], t.Any] = jsonlib.loads,
+        response_cls: t.Type[MockResponse] = MockResponse,
         supported_kwargs: t.Iterable[str] = None,
     ):
         self.json_serializer = json_serializer
         self.json_deserializer = json_deserializer
+        self._response_cls = response_cls
         self._entry_registry = defaultdict(list)
         self._supported_kwargs = self.default_supported_kwargs + (
             supported_kwargs or tuple()

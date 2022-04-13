@@ -1,22 +1,23 @@
 [tool.poetry]
-name = "aioresponses"
+name = "aiohttp_responses"
 version = "0.1.0"
-description = "proper aioresponses lib"
+description = "proper aiohttp_responses lib"
 authors = ["indico <engineering@indicodata.ai>"]
-packages = [ {include = "aioresponses"}]
+packages = [ {include = "aiohttp_responses"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.7,<4.0"
 setuptools = "^57.4.0"
 pytest = {version = "^6.2.4", extras = ["test"]}
-
-
+aiohttp = "^3.8.1"
 
 [tool.poetry.dev-dependencies]
 pytest = {version = "^6.2.4"}
 black = {version = "^22.3.0", allow-prereleases = true}
 isort = {version = "^5.10.1", allow-prereleases = true}
 ipdb = {version = "^0.13.9", allow-prereleases = true}
+pytest-asyncio = "^0.18.3"
+flake8 = "^4.0.1"
 
 [tool.pytest.ini_options]
 addopts = "-ra -q"

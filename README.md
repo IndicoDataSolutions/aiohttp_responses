@@ -1,6 +1,6 @@
-# aioresponses
+# aiohttp_responses
 
-proper aioresponses lib
+proper aiohttp_responses lib
 
 Built on: Poetry, Docker, Python3
 
@@ -13,7 +13,7 @@ indico <engineering@indicodata.ai>
 $ poetry install
 
 # Test Installation
-$ poetry run python3 -c "import aioresponses; print(aioresponses)"
+$ poetry run python3 -c "import aiohttp_responses; print(aiohttp_responses)"
 ```
 
 ## pre-commit hooks

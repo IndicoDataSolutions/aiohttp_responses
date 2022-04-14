@@ -1,5 +1,4 @@
 import json as jsonlib
-import re
 import sys
 import typing as t
 from collections import defaultdict
@@ -9,103 +8,13 @@ from unittest import mock
 
 from aiohttp.client import ClientSession, StrOrURL
 
+from .entry import Entry
+from .response import MockResponse
+
 if sys.version_info < (3, 8):
     from typing_extensions import Literal
 else:
     Literal = t.Literal
-
-
-class MockResponse:
-    _json: t.Dict[str, t.Any] = None
-    _text: str = None
-
-    def __init__(
-        self,
-        status: int = 200,
-        url: str = None,
-        json: t.Dict[str, t.Any] = None,
-        text: str = None,
-        attrs: t.Dict[str, t.Any] = None,
-    ):
-        self.status = status
-        self.url = url
-        self._json = json
-        self._text = text or jsonlib.dumps(json)
-
-        # Set attrs for flexibility
-        attrs = attrs or {}
-        for field, value in attrs.items():
-            if field.startswith("_"):
-                raise ValueError("Cannot pass underscore attrs to MockedResponse")
-            setattr(self, field, value)
-
-    def set_url(self, url: str):
-        self.url = url
-
-    async def text(self):
-        return self._text
-
-    async def json(self, *args, **kwargs):
-        return self._json
-
-    def release(self):
-        pass
-
-    @property
-    def ok(self):
-        return self.status < 400
-
-
-class Entry:
-    str_or_url: StrOrURL
-    req_kwargs: t.Dict[str, t.Any]
-    use_regex: bool
-    saved_response: MockResponse
-    json_serializer: t.Callable[[t.Any], str]
-    json_deserializer: t.Callable[[str], t.Any]
-
-    def __init__(
-        self,
-        str_or_url: StrOrURL,
-        req_kwargs: t.Dict[str, t.Any],
-        json_serializer: t.Callable[[t.Any], str] = jsonlib.dumps,
-        json_deserializer: t.Callable[[str], t.Any] = jsonlib.loads,
-        use_regex: bool = False,
-    ):
-        self.str_or_url = str_or_url
-        self.req_kwargs = req_kwargs
-        self.use_regex = use_regex
-        self.json_serializer = json_serializer
-        self.json_deserializer = json_deserializer
-
-    def is_match(self, incoming: "Entry") -> bool:
-        return (
-            re.match(self.str_or_url, incoming.str_or_url)
-            if self.use_regex
-            else self.str_or_url == incoming.str_or_url
-        ) and self.req_kwargs == incoming.req_kwargs
-
-    def response(
-        self,
-        json: t.Dict[str, t.Any] = None,
-        text: str = None,
-        status: int = 200,
-        **attrs,
-    ) -> MockResponse:
-        self.saved_response = resp = MockResponse(
-            url=self.str_or_url, status=status, json=json, text=text, attrs=attrs
-        )
-        return resp
-
-    def get_response(self) -> MockResponse:
-        return self.saved_response
-
-    def __repr__(self):
-        return (
-            f"{self.__class__.__name__}({self.str_or_url}, "
-            f"req_kwargs={self.req_kwargs}, use_regex={self.use_regex})"
-        )
-
 
 HTTP_METHODS = Literal["get", "post", "put", "delete", "patch"]
 
@@ -163,7 +72,10 @@ class aiohttp_responses:
         target = self.create_entry(str_or_url, req_kwargs)
         for entry in self._entry_registry[method.lower()]:
             if entry.is_match(target):
-                return entry.get_response()
+                response = entry.get_response()
+                if response.callback:
+                    response.callback(response, target, entry)
+                return response
 
     def add(
         self,

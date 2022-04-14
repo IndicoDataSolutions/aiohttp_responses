@@ -6,3 +6,6 @@ Introduced typing extensions for compatibiliy with 3.7
 
 0.2.1 April 13, 2022
 Added more required methods to MockResponse. Will be implementing more flexibility here in a future patch.
+
+0.2.2 April 13, 2022
+Added callback functionality on matched responses. Callbacks will be called with response, request_entry, response_entry

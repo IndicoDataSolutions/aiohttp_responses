@@ -1,6 +1,6 @@
 FROM python:3.10
 
-LABEL version="0.2.1"
+LABEL version="0.2.2"
 LABEL author="indico"
 LABEL email="engineering@indicodata.ai"
 LABEL description="proper aiohttp_responses lib"

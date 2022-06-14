@@ -30,7 +30,7 @@ testpaths = [
 [tool.semantic_release]
 version_variable = ["aiohttp_responses/__init__.py:__version__"]
 version_toml = ["pyproject.toml:tool.poetry.version"]
-branch = "development"
+branch = "main"
 upload_to_respository=true
 repository_url="https://push.fury.io/indico"
 build_command="poetry build"

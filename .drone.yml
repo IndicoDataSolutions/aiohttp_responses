@@ -5,7 +5,6 @@ name: publish
 trigger:
   event:
     - push
-  exclude:
     - pull_request
 
 image_pull_secrets:

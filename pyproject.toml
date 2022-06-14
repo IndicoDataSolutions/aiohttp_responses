@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "indicodata-aiohttp_responses"
-version = "1.0.0-pre1+correctpipeline.0"
+version = "1.0.0-pre1+branchname.1"
 description = "proper aiohttp_responses lib"
 authors = ["indico <engineering@indicodata.ai>"]
 packages = [ {include = "aiohttp_responses"}]
@@ -30,9 +30,9 @@ testpaths = [
 [tool.semantic_release]
 version_variable = ["aiohttp_responses/__init__.py:__version__"]
 version_toml = ["pyproject.toml:tool.poetry.version"]
-branch = "development"
+branch = "main"
 upload_to_respository=true
-repository_url="https://push.fury.io/indico"
+repository_url = "https://push.fury.io/indico"
 build_command="poetry build"
 
 [build-system]

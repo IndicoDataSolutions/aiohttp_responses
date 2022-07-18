@@ -40,6 +40,7 @@ class Entry:
         self,
         json: t.Dict[str, t.Any] = None,
         text: str = None,
+        bytes: bytes = None,
         status: int = 200,
         callback: t.Callable = None,
         **attrs,
@@ -49,6 +50,7 @@ class Entry:
             status=status,
             json=json,
             text=text,
+            bytes=bytes,
             callback=callback,
             attrs=attrs,
         )

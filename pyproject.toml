@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "indicodata-aiohttp_responses"
-version = "1.0.1-rc0+dronev3.0"
+version = "1.1.0-rc0+mockbinaryresponse.0"
 description = "proper aiohttp_responses lib"
 authors = ["indico <engineering@indicodata.ai>"]
 packages = [ {include = "aiohttp_responses"}]

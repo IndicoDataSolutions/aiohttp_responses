@@ -30,6 +30,14 @@ async def test_get_request_with_params(aiohttp_responses):
                     await resp.json()
 
 
+async def test_get_request_with_binary_response(aiohttp_responses):
+    with aiohttp_responses as r:
+        r.get("https://host/endpoint").response(bytes=b"123")
+        async with aiohttp.ClientSession() as client:
+            async with client.get("https://host/endpoint") as resp:
+                assert await resp.read() == b"123"
+
+
 async def test_post_request_with_json(aiohttp_responses):
     with aiohttp_responses as r:
         r.post("https://host/endpoint", json={"param": [1, 2]}).response(

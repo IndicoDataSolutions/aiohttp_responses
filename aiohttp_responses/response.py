@@ -5,6 +5,7 @@ import typing as t
 class MockResponse:
     _json: t.Dict[str, t.Any] = None
     _text: str = None
+    _bytes: bytes = None
 
     def __init__(
         self,
@@ -12,6 +13,7 @@ class MockResponse:
         url: str = None,
         json: t.Dict[str, t.Any] = None,
         text: str = None,
+        bytes: bytes = None,
         callback: t.Callable = None,
         attrs: t.Dict[str, t.Any] = None,
     ):
@@ -20,6 +22,7 @@ class MockResponse:
         self._json = json
         self.callback = callback
         self._text = text or jsonlib.dumps(json)
+        self._bytes = bytes or self._text.encode("utf-8")
 
         # Set attrs for flexibility
         attrs = attrs or {}
@@ -36,6 +39,9 @@ class MockResponse:
 
     async def json(self, *args, **kwargs):
         return self._json
+
+    async def read(self):
+        return self._bytes
 
     def release(self):
         pass

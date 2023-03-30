@@ -5,6 +5,7 @@ from collections import defaultdict
 from copy import deepcopy
 from functools import partialmethod
 from unittest import mock
+import logging
 
 from aiohttp.client import ClientSession, StrOrURL
 
@@ -17,6 +18,7 @@ else:
     Literal = t.Literal
 
 HTTP_METHODS = Literal["get", "post", "put", "delete", "patch"]
+LOGGER = logging.getLogger(__name__)
 
 
 class aiohttp_responses:
@@ -75,7 +77,10 @@ class aiohttp_responses:
                 response = entry.get_response()
                 if response.callback:
                     response.callback(response, target, entry)
+                LOGGER.debug(f"Found match for {method} {str_or_url}: {req_kwargs}")
                 return response
+        else:
+            LOGGER.debug(f"No match for {method} {str_or_url}:{req_kwargs}")
 
     def add(
         self,
@@ -84,6 +89,7 @@ class aiohttp_responses:
         use_regex: bool = False,
         **req_kwargs: t.Dict[str, t.Any],
     ) -> Entry:
+        LOGGER.debug(f"Adding entry for {method} {str_or_url}: {req_kwargs}")
         entry = self.create_entry(str_or_url, req_kwargs, use_regex=use_regex)
         self._entry_registry[method].append(entry)
         return entry

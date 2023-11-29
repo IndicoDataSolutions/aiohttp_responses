@@ -46,6 +46,9 @@ class MockResponse:
     def release(self):
         pass
 
+    async def wait_for_close(self):
+        pass
+
     @property
     def ok(self):
         return self.status < 400

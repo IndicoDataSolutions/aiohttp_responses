@@ -1,11 +1,11 @@
 import json as jsonlib
+import logging
 import sys
 import typing as t
 from collections import defaultdict
 from copy import deepcopy
 from functools import partialmethod
 from unittest import mock
-import logging
 
 from aiohttp.client import ClientSession, StrOrURL
 

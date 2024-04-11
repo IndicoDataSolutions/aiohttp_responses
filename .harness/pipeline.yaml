@@ -39,13 +39,13 @@ pipeline:
                         value: black --check aiohttp_responses tests
                       - name: ruff
                         type: String
-                        value: <+input>
+                        value: ""
                       - name: mypy
                         type: String
-                        value: <+input>
+                        value: ""
                       - name: pylint
                         type: String
-                        value: <+input>
+                        value: ""
             - stage:
                 identifier: build_containers
                 type: CI

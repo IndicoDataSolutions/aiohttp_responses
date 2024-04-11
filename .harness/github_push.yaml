@@ -1,0 +1,26 @@
+inputSet:
+  name: github_push
+  tags: {}
+  identifier: github_push
+  orgIdentifier: default
+  projectIdentifier: IPA_Release
+  pipeline:
+    identifier: aiohttp_responses
+    template:
+      templateInputs:
+        properties:
+          ci:
+            codebase:
+              build:
+                type: branch
+                spec:
+                  branch: <+trigger.branch>
+        stages:
+          - parallel:
+              - stage:
+                  identifier: snyk_tests
+                  type: CI
+                  variables:
+                    - name: RUN_SNYK
+                      type: String
+                      value: "FALSE"

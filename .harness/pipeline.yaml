@@ -3,8 +3,9 @@ pipeline:
   identifier: aiohttp_responses
   tags: {}
   template:
-    templateRef: shared_library
-    versionLabel: 0.0.2
+    templateRef: account.shared_library
+    versionLabel: 1.1.0
+    gitBranch: main
     templateInputs:
       properties:
         ci:

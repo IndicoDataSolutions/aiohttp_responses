@@ -49,6 +49,11 @@ async def test_post_request_with_json(aiohttp_responses):
             ) as resp:
                 assert await resp.json() == {"success": True}
 
+            async with client.post(
+                "https://host/endpoint", json={"param": (1, 2)}
+            ) as resp:
+                assert await resp.json() == {"success": True}
+
             with pytest.raises(aiohttp.ClientConnectionError):
                 async with client.post(
                     "https://host/endpoint", json={"param": [1, 3]}

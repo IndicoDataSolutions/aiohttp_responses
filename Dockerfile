@@ -1,30 +1,18 @@
-ARG REGISTRY_PATH='harbor.devops.indico.io/indico'
-ARG BUILD_TAG=latest
+FROM python:3.10
 
-# builder stage
-FROM ${REGISTRY_PATH}/ubuntu-2204-build:${BUILD_TAG} AS poetry-installer
-ARG POETRY_INSTALL_ARGS
-ARG GEMFURY_TOKEN
+LABEL version="0.2.2"
+LABEL author="indico"
+LABEL email="engineering@indicodata.ai"
+LABEL description="proper aiohttp_responses lib"
 
-COPY pyproject.toml poetry.lock /venv/
+ENV PATH=/aiohttp_responses/bin:/usr/local/bin:${PATH} \
+    POETRY_HOME="/usr/local"
 
-RUN poetry export \
-        -f requirements.txt \
-        --output requirements.txt \
-        --without-hashes  \
-        --with dev && \
-        ${POETRY_INSTALL_ARGS} && \
-    pip3 install -r requirements.txt --no-deps
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
+COPY . /aiohttp_responses
+WORKDIR /aiohttp_responses
 
-# image
-FROM ${REGISTRY_PATH}/ubuntu-2204-deploy:${BUILD_TAG}
-ENV PYTHONPATH="/aiohttp_responses"
-
-WORKDIR /aiohttps_responses
-
-COPY --from=poetry-installer /venv /venv
-COPY . /aiohttps_responses/
-
+RUN poetry install --no-interaction --no-ansi --with dev
 
 CMD ["sleep", "infinity"]

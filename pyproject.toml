@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "indicodata-aiohttp_responses"
-version = "1.4.1"
+version = "1.4.2-rc0+json.0"
 description = "proper aiohttp_responses lib"
 authors = ["indico <engineering@indicodata.ai>"]
 packages = [ {include = "aiohttp_responses"}]

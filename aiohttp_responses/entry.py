@@ -28,6 +28,10 @@ class Entry:
         self.use_regex = use_regex
         self.json_serializer = json_serializer
         self.json_deserializer = json_deserializer
+        if "json" in self.req_kwargs:
+            self.req_kwargs["json"] = self.json_deserializer(
+                self.json_serializer(self.req_kwargs["json"])
+            )
 
     def is_match(self, incoming: "Entry") -> bool:
         return (

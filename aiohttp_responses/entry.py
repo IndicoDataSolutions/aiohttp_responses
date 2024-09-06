@@ -29,9 +29,16 @@ class Entry:
         self.json_serializer = json_serializer
         self.json_deserializer = json_deserializer
         if "json" in self.req_kwargs:
-            self.req_kwargs["json"] = self.json_deserializer(
-                self.json_serializer(self.req_kwargs["json"])
-            )
+            try:
+                # This try-except is a temp patch for now to unblock intake work
+                # Consider making it easier to pass custom serializers so that
+                # we can round-trip without causing failures where
+                # atmosphere would have accepted it.
+                self.req_kwargs["json"] = self.json_deserializer(
+                    self.json_serializer(self.req_kwargs["json"])
+                )
+            except Exception as e:
+                pass
 
     def is_match(self, incoming: "Entry") -> bool:
         return (

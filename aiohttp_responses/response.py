@@ -49,6 +49,12 @@ class MockResponse:
     async def wait_for_close(self):
         pass
 
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        pass
+
     @property
     def ok(self):
         return self.status < 400

@@ -28,6 +28,11 @@ async def test_get_request_with_params(aiohttp_responses):
                     "https://host/endpoint", params={"param": [1, 3]}
                 ) as resp:
                     await resp.json()
+            with pytest.raises(aiohttp.ClientConnectionError):
+                async with client.get(
+                    "https://host/endpoint", params={"param": [1, 3]}
+                ) as resp:
+                    await resp.raise_for_status()
 
 
 async def test_get_request_with_binary_response(aiohttp_responses):

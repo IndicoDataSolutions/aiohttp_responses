@@ -1,6 +1,8 @@
 import json as jsonlib
 import typing as t
 
+from aiohttp import ClientResponseError
+
 
 class MockResponse:
     _json: t.Dict[str, t.Any] = None
@@ -58,3 +60,11 @@ class MockResponse:
     @property
     def ok(self):
         return self.status < 400
+
+    def raise_for_status(self):
+        if not self.ok:
+            raise ClientResponseError(
+                None,
+                None,
+                status=self.status,
+            )
